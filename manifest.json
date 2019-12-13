@@ -1,0 +1,7 @@
+{
+  "name": "translator",
+  "id": "768761600669253736",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html"
+}

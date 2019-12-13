@@ -1,0 +1,46 @@
+<input type="file" id="files" name="files[]" multiple />
+<output id="list"></output>
+
+<script>
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // files is a FileList of File objects. List some properties.
+	var output = [];
+	var languageDict = {}
+	var numFiles = files.length
+    for (var i = 0, f; f = files[i]; i++) {
+		var reader = new FileReader();
+
+		reader.onload = (function(reader)
+        {
+			let locale = f.path.split('/')[f.path.split('/').length-2].replace('.lproj', '')
+			languageDict[locale] = {}
+            return function() {
+                var contents = reader.result;
+				var lines = contents.split('\n');
+				// console.log(lines)
+				lines.map(function(line) {
+					if (line.includes('=')) {
+						let key = line.split(' = ')[0].replace(/"/g, "")
+						let value = line.split(' = ')[1].replace(/"/g, "").replace(/;/g, "")
+						languageDict[locale][key] = value
+					}
+
+				})
+				numFiles -= 1
+				if (numFiles == 0) {
+					onComplete()
+				}
+            }
+        })(reader);
+
+        reader.readAsText(f);
+	}
+	let onComplete = function() {
+		window.parent.postMessage({pluginMessage: languageDict}, '*')
+	}
+  }
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+</script>
