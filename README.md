@@ -3,33 +3,26 @@
 ## Using the plugin:
 0- Use figma desktop and import the plugin manifest.
 
-1- The layout in figma must be the following:
+1- The naming in figma must be the following:
 
-    All Texts
-    --Text 1
-    ----Text1/ar
-    ----Text1/he
-    ----Text1/en
-    ----Text1/de
-    --Text 2
-    ----Text2/ar
-    (etc)
+`Frame Name = FRAMEPREFIX/LOCALE/NUMBER`
+`Text Name = #LOCALIZATIONKEY`
  
  2- You must have strings in your localized.strings in the following format:
-  `"store.screenshot.03.title" = "White Background";`
+  `"LOCALIZATIONKEY" = "White Background";`
   
  3- You must create symlinks linking to your localized.strings in the following format: 
  - `en.string`
  - `fr.string`
  - (etc)
  
- To do so, we recommend creating a folder containing relative symlinks in your repository. E.g we have a `Assets/TranslationLinks`
+ To do so, we recommend creating a folder containing relative symlinks in your repository. E.g we have a `fastlane/language_links`
  containing symlinks to all those files. We ran this command for each translation: `ln -s ../fr.lproj/Localizable.strings fr.strings`
  In the end the Assets/TranslationLinks folder contains links to all translation files.
  
- 4- In figma, select `Text 1`, `Text 2`, etc. Right click, select plugins, our plugin. It opens a popup. Select browse and select all the files from the `TranslationLinks` folder
+ 4- In figma, select the right page. Right click, select plugins, our plugin. It opens a popup. Select browse and select all the files from the `TranslationLinks` folder
 
-
+5- You can use the` language cleaner` dictionary to match the app store to app locale. If a locale doesn't work, we also try to split to a 2 character locale 
 
 
 ## General installation instructions
