@@ -24,6 +24,8 @@
 
 5- You can use the` language cleaner` dictionary to match the app store to app locale. If a locale doesn't work, we also try to split to a 2 character locale 
 
+6- You can use the` specialFonts` array to load special fonts from the text styles of the pages. If a locale is in the list, the plug in will look for a style `screenshot_title_LOCALE` and override the font from the root element. You can then change the font in figma by changing the style
+
 
 ## General installation instructions
 This plugin template uses Typescript. If you are familiar with Javascript, Typescript will

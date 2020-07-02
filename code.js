@@ -18,6 +18,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
         }
 
         const languageCleaner = {'no': 'nb'}
+
         adaptedLocale = languageCleaner[adaptedLocale] || adaptedLocale
         // console.log(name, translationId, locale)
         if (!(adaptedLocale in translationDict)) {
@@ -43,16 +44,38 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
         return allTranslations[key];
     };
 
-    function setTextContent(textNode, text) {
+    function setTextContent(textNode, text, locale) {
         var font = null;
         var alertOnce = false;
+        const specialFonts = ['zh-Hans','zh-Hant','he','ar','ja','ko','thai']
+
         if (typeof textNode.fontName != 'symbol') {
-            font = textNode.fontName;
-            figma.loadFontAsync(font).then(() => {
-                if (text != null) {
-                    textNode.characters = text;
+            console.log('locale', locale)
+            if (specialFonts.includes(locale)) {
+                let textStyles = figma.getLocalTextStyles()
+                console.log('textStyles', textStyles)
+                for (const textStyle of textStyles) {
+                    console.log('style', 'screenshot_title_' + locale);
+                    if (textStyle.name === 'screenshot_title_' + locale){
+                        console.log('loaded style', textStyle);
+                        figma.loadFontAsync(textStyle.fontName).then(() => {
+                            textNode.textStyleId = textStyle.id
+                            if (text != null) {
+                                textNode.characters = text;
+                            }
+                        });
+                    }
                 }
-            });
+            } else {
+                font = textNode.fontName;
+                console.log('font', font)
+                figma.loadFontAsync(font).then(() => {
+                    if (text != null) {
+                        textNode.characters = text;
+                    }
+                });    
+            }
+            // font = textNode.fontName;
         }
         else {
             if (!alertOnce) {
@@ -83,9 +106,9 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                         let translation = nameToTranslation(key, locale);
                         console.log("after nameToTranslation",)
                         if (translation != null) {
-                            console.log("set translation");
+                            console.log("set translation 1");
                             textNode.autoRename = false
-                            setTextContent(textNode, translation);
+                            setTextContent(textNode, translation, locale);
                             console.log('translation set: ' + translation);
                         }
                     }
