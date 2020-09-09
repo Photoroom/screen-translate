@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 figma.showUI(__html__, { visible: true });
 figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, function* () {
+    console.log('hello world');
     console.log('translation dict from file', translationDict);
     let nameToTranslation = function (key, locale) {
         console.log("nameToTranslation", key, locale)
@@ -22,7 +23,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
         adaptedLocale = languageCleaner[adaptedLocale] || adaptedLocale
         // console.log(name, translationId, locale)
         if (!(adaptedLocale in translationDict)) {
-            console.log('ERROR: locale not found', adaptedLocale);
+            // console.info('Warning: locale not found', adaptedLocale);
             let splitLocale = adaptedLocale.split('-');
             if (splitLocale.length > 1) {
                 adaptedLocale = splitLocale[0];
@@ -32,6 +33,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                     console.log('adapted locale: ' + adaptedLocale);
                 }
             } else {
+                console.error('Could not fallback locale')
                 return null;
             }
         }
@@ -90,6 +92,10 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
     let locale = ''
     function traverse(node) {
         console.log('traverse: ' + node.type);
+        console.log("At node ", node.name)
+        if (node.name === 'Info') {
+            return
+        }
         if (node.type === "FRAME") {
             let paths = node.name.split('/');
             if (paths.length > 2) {
