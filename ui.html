@@ -22,8 +22,8 @@
 				// console.log(lines)
 				lines.map(function(line) {
 					if (line.includes('=') && line.includes(';')) {
-						let leftPart = line.split(' = ')[0]
-						let rightPart =  line.split(' = ')[1]
+						let leftPart = line.split('=')[0].trim()
+						let rightPart =  line.split('=')[1].trim()
 						console.log(leftPart, rightPart)
 						let key = leftPart.replace(/"/g, "")
 						let value = rightPart.replace(/"/g, "").replace(/;/g, "")
