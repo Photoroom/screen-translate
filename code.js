@@ -12,7 +12,6 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
     console.log('hello world');
     console.log('translation dict from file', translationDict);
     let nameToTranslation = function (key, locale) {
-        console.log("nameToTranslation", key, locale)
         let adaptedLocale = locale
         if (adaptedLocale === 'universal') {
             return null;
@@ -92,7 +91,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
     let locale = ''
     function traverse(node) {
         console.log('traverse: ' + node.type);
-        console.log("At node ", node.name)
+        // console.log("At node ", node.name)
         if (node.name === 'Info') {
             return
         }
@@ -100,6 +99,10 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
             let paths = node.name.split('/');
             if (paths.length > 2) {
                 locale = paths[paths.length-2];
+                //android frame names are longer
+                if (paths.length > 5) {
+                    locale = paths[paths.length-5];
+                }
                 console.log('locale: ' + locale);
                 const textNodes = node.findAll(nodeInFrame => nodeInFrame.type === "TEXT");
                 console.log("found text nodes", textNodes.length)
@@ -107,7 +110,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                     let translationKey = textNode.name;
                     console.log('characters: ' + translationKey);
                     if (translationKey.charAt(0) === '#') {
-                        let key = translationKey.substr(1).toLowerCase()
+                        let key = translationKey.toLowerCase()
                         console.log('key: ' + key + ' locale:' + locale);
                         let translation = nameToTranslation(key, locale);
                         console.log("after nameToTranslation",)

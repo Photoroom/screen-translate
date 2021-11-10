@@ -14,12 +14,11 @@
 
 		reader.onload = (function(reader)
         {
-			let locale = f.path.split('/')[f.path.split('/').length-2].replace('.lproj', '')
+			let locale = f.path.split('/')[f.path.split('/').length-1].replace('.strings', '')
 			languageDict[locale] = {}
             return function() {
                 var contents = reader.result;
 				var lines = contents.split('\n');
-				// console.log(lines)
 				lines.map(function(line) {
 					if (line.includes('=') && line.includes(';')) {
 						let leftPart = line.split('=')[0].trim()
