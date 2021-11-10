@@ -5,21 +5,18 @@
 
 1- The naming in figma must be the following:
 
-`Frame Name = FRAMEPREFIX/LOCALE/NUMBER`
+`Frame Name = FRAMEPREFIX/LOCALE/NUMBER` or
+`Frame Name = android/LOCALE/images/phoneScreenshots/NUMBER`
 `Text Name = #LOCALIZATIONKEY`
  
  2- You must have strings in your localized.strings in the following format:
   `"LOCALIZATIONKEY" = "White Background";`
   
- 3- You must create symlinks linking to your localized.strings in the following format: 
+ 3- You must create translations files in the following format LANGUAGE_ISO.strings and put them all in the same folder, it's easy to do using the lokalize: 
  - `en.string`
  - `fr.string`
  - (etc)
- 
- To do so, we recommend creating a folder containing relative symlinks in your repository. E.g we have a `fastlane/language_links`
- containing symlinks to all those files. We ran this command for each translation: `ln -s ../fr.lproj/Localizable.strings fr.strings`
- In the end the Assets/TranslationLinks folder contains links to all translation files.
- 
+  
  4- In figma, select the right page. Right click, select plugins, our plugin. It opens a popup. Select browse and select all the files from the `TranslationLinks` folder
 
 5- You can use the` language cleaner` dictionary to match the app store to app locale. If a locale doesn't work, we also try to split to a 2 character locale 
