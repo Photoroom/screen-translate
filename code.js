@@ -98,7 +98,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
         if (node.type === "FRAME") {
             let paths = node.name.split('/');
             if (paths.length > 2) {
-                locale = paths[paths.length-2];
+                locale = paths[1];
                 //android frame names are longer
                 if (paths.length > 5) {
                     locale = paths[paths.length-5];
