@@ -31,7 +31,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                     console.log('adapted locale: ' + adaptedLocale);
                 }
             } else {
-                console.warning(`This locale ${adaptedLocale} is not available in the dict of all locales`)
+                console.warn(`This locale ${adaptedLocale} is not available in the dict of all locales`)
                 return null;
             }
         }
