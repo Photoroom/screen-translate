@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 figma.showUI(__html__, { visible: true });
 figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, function* () {
-    console.log('hello world');
     console.log('translation dict from file', translationDict);
     let nameToTranslation = function (key, locale) {
         let adaptedLocale = locale
@@ -32,12 +31,11 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                     console.log('adapted locale: ' + adaptedLocale);
                 }
             } else {
-                console.error('Could not fallback locale')
+                console.warning(`This locale ${adaptedLocale} is not available in the dict of all locales`)
                 return null;
             }
         }
         let allTranslations = translationDict[adaptedLocale];
-        // console.log(name, translationId, )
         if (!(key in allTranslations)) {
             console.log('ERROR: translation not found', adaptedLocale, key);
             return "";
@@ -86,6 +84,9 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
         }
 
     };
+    const isIterable = (value) => {
+        return Symbol.iterator in Object(value);
+    }
 
     let page = figma.currentPage;
     let locale = ''
@@ -98,7 +99,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
         if (node.type === "FRAME") {
             let paths = node.name.split('/');
             if (paths.length > 2) {
-                locale = paths[1];
+                locale = paths[paths.length-2];
                 //android frame names are longer
                 if (paths.length > 5) {
                     locale = paths[paths.length-5];
@@ -115,7 +116,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                         let translation = nameToTranslation(key, locale);
                         console.log("after nameToTranslation",)
                         if (translation != null) {
-                            console.log("set translation 1");
+                            console.log("Setting autoRename to false", textNode);
                             textNode.autoRename = false
                             setTextContent(textNode, translation, locale);
                             console.log('translation set: ' + translation);
@@ -125,9 +126,11 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
             }
         }
         if (node.type !== "INSTANCE") {
-            for (const child of node.children) {
-                traverse(child);
-            }
+            if (isIterable(node.children)) {
+                for (const child of node.children) {
+                    traverse(child);
+                } 
+            }   
         }
     }
     traverse(page); // start the traversal at the PAGE
