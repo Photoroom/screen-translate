@@ -138,11 +138,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                     let translationKey = textNode.name;
                     console.log('characters: ' + translationKey);
                     if (translationKey.charAt(0) === '#') {
-<<<<<<< HEAD
                         let key = translationKey.toLowerCase()
-=======
-                        let key = translationKey.substr(1)
->>>>>>> d21c6c7 (apply special fonts using different styles)
                         console.log('key: ' + key + ' locale:' + locale);
                         let translation = nameToTranslation(key, locale);
                         console.log("after nameToTranslation",)
