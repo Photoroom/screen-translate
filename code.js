@@ -46,7 +46,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
     function setTextContent(textNode, text, locale) {
         var font = null;
         var alertOnce = false;
-        const specialFonts = ['zh-Hans','zh-Hant','he','ar','ja','ko','thai']
+        const specialFonts = ['zh-Hans','zh-Hant','he','ar','ja','ko','thai', 'ru', 'vi']
 
         if (typeof textNode.fontName != 'symbol') {
             console.log('locale', locale)
@@ -54,11 +54,38 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                 let textStyles = figma.getLocalTextStyles()
                 console.log('textStyles', textStyles)
                 for (const textStyle of textStyles) {
-                    console.log('style', 'screenshot_title_' + locale);
-                    if (textStyle.name === 'screenshot_title_' + locale){
-                        console.log('loaded style', textStyle);
+                    if (textStyle.name === 'screenshot_title_' + locale) {
                         figma.loadFontAsync(textStyle.fontName).then(() => {
-                            textNode.textStyleId = textStyle.id
+                            if (textNode.name.startsWith("#screenshots_") && textNode.name != "#screenshots_animatedSocialContent") {
+                                textNode.textStyleId = textStyle.id;
+                            }
+                            if (text != null) {
+                                textNode.characters = text;
+                            }
+                        });
+                    } else if (textStyle.name === 'screenshot_tagline_' + locale) {
+                        figma.loadFontAsync(textStyle.fontName).then(() => {
+                            if (textNode.name == "#screenshots_animatedSocialContent") {
+                                textNode.textStyleId = textStyle.id;
+                            }
+                            if (text != null) {
+                                textNode.characters = text;
+                            }
+                        });
+                    } else if (textStyle.name === 'screenshot_section_' + locale) {
+                        figma.loadFontAsync(textStyle.fontName).then(() => {
+                            if (textNode.name.startsWith("#creation_graphics_tabBar_title_")) {
+                                textNode.textStyleId = textStyle.id;
+                            }
+                            if (text != null) {
+                                textNode.characters = text;
+                            }
+                        });
+                    } else if (textStyle.name === 'screenshot_cta_' + locale) {
+                        figma.loadFontAsync(textStyle.fontName).then(() => {
+                            if (textNode.name == "#onboarding_button_next") {
+                                textNode.textStyleId = textStyle.id;
+                            }
                             if (text != null) {
                                 textNode.characters = text;
                             }
@@ -111,7 +138,11 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                     let translationKey = textNode.name;
                     console.log('characters: ' + translationKey);
                     if (translationKey.charAt(0) === '#') {
+<<<<<<< HEAD
                         let key = translationKey.toLowerCase()
+=======
+                        let key = translationKey.substr(1)
+>>>>>>> d21c6c7 (apply special fonts using different styles)
                         console.log('key: ' + key + ' locale:' + locale);
                         let translation = nameToTranslation(key, locale);
                         console.log("after nameToTranslation",)
