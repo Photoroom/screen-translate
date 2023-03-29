@@ -46,7 +46,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
         return allTranslations[key];
     };
 
-    function setTextContent(textNode, text, locale) {
+    function setTextContent(deviceType, textNode, text, locale) {
         var font = null;
         var alertOnce = false;
         const specialFonts = ['zh-Hans','zh-Hant','he','ar','ja','ko','thai', 'ru', 'vi']
@@ -57,36 +57,54 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                 let textStyles = figma.getLocalTextStyles()
                 console.log('textStyles', textStyles)
                 for (const textStyle of textStyles) {
-                    if (textStyle.name === 'screenshot_title_' + locale) {
+                    if (textStyle.name === 'title_' + locale && deviceType != 'ipad') {
                         figma.loadFontAsync(textStyle.fontName).then(() => {
-                            if (textNode.name.startsWith("#screenshots_") && textNode.name != "#screenshots_animatedSocialContent") {
+                            if (textNode.name.startsWith("#screenshots_")) {
                                 textNode.textStyleId = textStyle.id;
                             }
                             if (text != null) {
                                 textNode.characters = text;
                             }
                         });
-                    } else if (textStyle.name === 'screenshot_tagline_' + locale) {
+                    } else if (textStyle.name === 'title_ipad_' + locale && deviceType === 'ipad') {
                         figma.loadFontAsync(textStyle.fontName).then(() => {
-                            if (textNode.name == "#screenshots_animatedSocialContent") {
+                            if (textNode.name.startsWith("#screenshots_")) {
                                 textNode.textStyleId = textStyle.id;
                             }
                             if (text != null) {
                                 textNode.characters = text;
                             }
                         });
-                    } else if (textStyle.name === 'screenshot_section_' + locale) {
+                    } else if (textStyle.name === 'button' + locale && deviceType != 'ipad') {
                         figma.loadFontAsync(textStyle.fontName).then(() => {
-                            if (textNode.name.startsWith("#creation_graphics_tabBar_title_")) {
+                            if (textNode.name === "#reel_use_template") {
                                 textNode.textStyleId = textStyle.id;
                             }
                             if (text != null) {
                                 textNode.characters = text;
                             }
                         });
-                    } else if (textStyle.name === 'screenshot_cta_' + locale) {
+                    } else if (textStyle.name === 'button_ipad' + locale && deviceType === 'ipad') {
                         figma.loadFontAsync(textStyle.fontName).then(() => {
-                            if (textNode.name == "#onboarding_button_next") {
+                            if (textNode.name === "#reel_use_template") {
+                                textNode.textStyleId = textStyle.id;
+                            }
+                            if (text != null) {
+                                textNode.characters = text;
+                            }
+                        });
+                    } else if (textStyle.name === 'bottom_nav_cta' + locale && deviceType != 'ipad') {
+                        figma.loadFontAsync(textStyle.fontName).then(() => {
+                            if (textNode.name.startsWith("#creation") || textNode.name.startsWith("#edit_main_editing") || textNode.name === "#text_option_button_duplicate") {
+                                textNode.textStyleId = textStyle.id;
+                            }
+                            if (text != null) {
+                                textNode.characters = text;
+                            }
+                        });
+                    } else if (textStyle.name === 'bottom_nav_cta_ipad' + locale && deviceType === 'ipad') {
+                        figma.loadFontAsync(textStyle.fontName).then(() => {
+                            if (textNode.name.startsWith("#creation") || textNode.name.startsWith("#edit_main_editing") || textNode.name === "#text_option_button_duplicate") {
                                 textNode.textStyleId = textStyle.id;
                             }
                             if (text != null) {
@@ -117,6 +135,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
 
     let page = figma.currentPage;
     let locale = ''
+    let deviceType = ''
     function traverse(node) {
         console.log('traverse: ' + node.type);
         console.log("At node ", node.name)
@@ -127,6 +146,8 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
             let paths = node.name.split('/');
             if (paths.length > 2) {
                 locale = paths[paths.length-2];
+                let suffixes = paths[paths.length-1].split('_');
+                deviceType = suffixes[suffixes.length-1]
                 console.log('locale: ' + locale);
                 const textNodes = node.findAll(nodeInFrame => nodeInFrame.type === "TEXT");
                 console.log("found text nodes", textNodes.length)
@@ -141,7 +162,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                         if (translation != null) {
                             console.log("set translation 1");
                             textNode.autoRename = false
-                            setTextContent(textNode, translation, locale);
+                            setTextContent(deviceType, textNode, translation, locale);
                             console.log('translation set: ' + translation);
                         }
                     }
