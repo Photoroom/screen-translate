@@ -77,7 +77,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                         });
                     } else if (textStyle.name === 'button' + locale && deviceType != 'ipad') {
                         figma.loadFontAsync(textStyle.fontName).then(() => {
-                            if (textNode.name === "#reel_use_template") {
+                            if (textNode.name === "#onboarding_cta_startCreating") {
                                 textNode.textStyleId = textStyle.id;
                             }
                             if (text != null) {
@@ -86,7 +86,7 @@ figma.ui.onmessage = (translationDict) => __awaiter(this, void 0, void 0, functi
                         });
                     } else if (textStyle.name === 'button_ipad' + locale && deviceType === 'ipad') {
                         figma.loadFontAsync(textStyle.fontName).then(() => {
-                            if (textNode.name === "#reel_use_template") {
+                            if (textNode.name === "#onboarding_cta_startCreatinge") {
                                 textNode.textStyleId = textStyle.id;
                             }
                             if (text != null) {
